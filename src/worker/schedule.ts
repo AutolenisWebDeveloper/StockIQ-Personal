@@ -19,6 +19,7 @@ const SCHEDULES: Schedule[] = [
   { job: Job.NewsHeadlines, pattern: "0 */3 * * *" }, // every 3h
   { job: Job.Fundamentals, pattern: "0 6 * * 0" }, // weekly (Sun) + event-driven elsewhere
   { job: Job.Macro, pattern: "0 8 * * *" }, // daily
+  { job: Job.Compute, pattern: "20 22 * * 1-5", tz: "America/New_York" }, // daily full-universe recompute after EOD
 ];
 
 export async function registerSchedules(): Promise<void> {

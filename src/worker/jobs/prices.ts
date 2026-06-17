@@ -5,6 +5,8 @@ import { computeIndicators, type Bar } from "../../lib/indicators";
 import { upsertCorporateActions, recomputeAdjClose } from "../../lib/corporate-actions";
 import { sectorEtf, MARKET_ETF } from "../../lib/sectors";
 import { withRun } from "../runlog";
+import { getQueue } from "../../queue/queues";
+import { Job } from "../../queue/jobs";
 
 const HISTORY_YEARS = 3;
 const REL_WINDOW = 63; // ~3 trading months
@@ -164,9 +166,13 @@ export async function runPrices(tickers?: string[]): Promise<void> {
   const universe = tickers ?? (await getActiveUniverse());
   const getBench = makeBenchLoader();
   for (const ticker of universe) {
-    await withRun("prices-eod", ticker, async () => {
+    const res = await withRun("prices-eod", ticker, async () => {
       const r = await processTicker(ticker, getBench);
       return { rowsWritten: r.rows, status: r.degraded ? "degraded" : "success" };
     });
+    // Phase 2 chain: recompute the deterministic engines once prices land.
+    if (res.status !== "failed") {
+      await getQueue(Job.Compute).add(Job.Compute, { tickers: [ticker] });
+    }
   }
 }

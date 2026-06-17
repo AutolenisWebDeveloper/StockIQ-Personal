@@ -10,6 +10,7 @@ import { runMacro } from "./jobs/macro";
 import { runNews } from "./jobs/news";
 import { runEarningsCalendar } from "./jobs/earningsCal";
 import { runColdFetch } from "./jobs/coldFetch";
+import { runCompute } from "./jobs/compute";
 import { registerSchedules } from "./schedule";
 
 // data shape jobs may carry: { tickers?: string[] } or { ticker: string }
@@ -28,6 +29,7 @@ const handlers: Record<Job, (data: JobData) => Promise<void>> = {
   [Job.NewsHeadlines]: (d) => runNews(d.tickers),
   [Job.EarningsCalendar]: (d) => runEarningsCalendar(d.tickers),
   [Job.ColdFetch]: (d) => runColdFetch(d.ticker!),
+  [Job.Compute]: (d) => runCompute(d.tickers),
 };
 
 const workers = Object.values(Job).map(

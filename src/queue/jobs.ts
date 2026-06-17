@@ -10,4 +10,5 @@ export enum Job {
   NewsHeadlines = "news-headlines",
   EarningsCalendar = "earnings-calendar",
   ColdFetch = "cold-fetch", // on-demand untracked ticker
+  Compute = "compute", // Phase 2: deterministic engines (levels/valuation/conviction/opportunity)
 }
