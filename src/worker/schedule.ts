@@ -20,6 +20,8 @@ const SCHEDULES: Schedule[] = [
   { job: Job.Fundamentals, pattern: "0 6 * * 0" }, // weekly (Sun) + event-driven elsewhere
   { job: Job.Macro, pattern: "0 8 * * *" }, // daily
   { job: Job.Compute, pattern: "20 22 * * 1-5", tz: "America/New_York" }, // daily full-universe recompute after EOD
+  { job: Job.EmbedFilings, pattern: "30 * * * *" }, // hourly, after filings-poll (RAG ingest)
+  // generate-report is on-demand only (LLM cost) — enqueued from the API/dashboard.
 ];
 
 export async function registerSchedules(): Promise<void> {

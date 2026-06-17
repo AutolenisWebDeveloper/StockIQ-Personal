@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { TickerRow } from "@/lib/dashboard/queries";
 import { Panel, ActionPill, RiskText, StatusDot, Empty, fmtNum } from "@/components/ui/primitives";
 
@@ -23,7 +24,7 @@ export function WatchlistRankings({ rows }: { rows: TickerRow[] }) {
             {rows.map((r) => (
               <tr key={r.ticker} className="border-b border-line/70 last:border-0">
                 <td className="py-2.5">
-                  <div className="text-[13px] font-bold text-ink">{r.ticker}</div>
+                  <Link href={`/reports/${r.ticker}`} className="text-[13px] font-bold text-ink hover:text-info">{r.ticker}</Link>
                   <div className="truncate text-[11px] text-muted">{r.name ?? ""}</div>
                 </td>
                 <td className="num py-2.5 text-right text-[13px] text-ink">{r.price != null ? `$${fmtNum(r.price)}` : "—"}</td>

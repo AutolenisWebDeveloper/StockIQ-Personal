@@ -21,3 +21,82 @@ body {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
+
+/* Decision Report markdown typography (no tailwind-typography plugin) */
+.prose-report {
+  font-size: 14px;
+  line-height: 1.65;
+  color: theme(colors.ink);
+}
+.prose-report h1 {
+  font-family: theme(fontFamily.display);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+.prose-report h2 {
+  font-family: theme(fontFamily.display);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+  padding-top: 10px;
+  border-top: 1px solid theme(colors.line);
+}
+.prose-report h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 16px 0 6px;
+}
+.prose-report p {
+  margin: 8px 0;
+}
+.prose-report ul,
+.prose-report ol {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+.prose-report li {
+  margin: 3px 0;
+}
+.prose-report strong {
+  font-weight: 600;
+}
+.prose-report code {
+  font-family: theme(fontFamily.mono);
+  font-size: 12px;
+  background: theme(colors.paper);
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+.prose-report hr {
+  border: 0;
+  border-top: 1px solid theme(colors.line);
+  margin: 18px 0;
+}
+.prose-report blockquote {
+  border-left: 3px solid theme(colors.line);
+  padding-left: 12px;
+  color: theme(colors.muted);
+  margin: 10px 0;
+}
+.prose-report table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.prose-report th,
+.prose-report td {
+  border: 1px solid theme(colors.line);
+  padding: 6px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.prose-report th {
+  background: theme(colors.paper);
+  font-weight: 600;
+}
+.prose-report a {
+  color: theme(colors.info);
+  text-decoration: underline;
+}

@@ -11,6 +11,8 @@ import { runNews } from "./jobs/news";
 import { runEarningsCalendar } from "./jobs/earningsCal";
 import { runColdFetch } from "./jobs/coldFetch";
 import { runCompute } from "./jobs/compute";
+import { runEmbedFilings } from "./jobs/embedFilings";
+import { runGenerateReport } from "./jobs/generateReport";
 import { registerSchedules } from "./schedule";
 
 // data shape jobs may carry: { tickers?: string[] } or { ticker: string }
@@ -30,6 +32,8 @@ const handlers: Record<Job, (data: JobData) => Promise<void>> = {
   [Job.EarningsCalendar]: (d) => runEarningsCalendar(d.tickers),
   [Job.ColdFetch]: (d) => runColdFetch(d.ticker!),
   [Job.Compute]: (d) => runCompute(d.tickers),
+  [Job.EmbedFilings]: (d) => runEmbedFilings(d.tickers),
+  [Job.GenerateReport]: (d) => runGenerateReport(d.tickers),
 };
 
 const workers = Object.values(Job).map(
