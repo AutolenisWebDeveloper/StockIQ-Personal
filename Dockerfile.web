@@ -1,0 +1,18 @@
+# Next.js app image. Also carries tsx + the db/ runner so the web container can
+# run idempotent migrate + seed at boot (see docker-compose web.command).
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Install dependencies first for better layer caching.
+COPY package.json package-lock.json* ./
+RUN npm install
+
+# Copy the rest and build (next build + compiled worker output in dist/).
+COPY . .
+RUN npm run build
+
+EXPOSE 3000
+
+# Compose overrides this with: migrate && seed && start. Kept as a sane default.
+CMD ["sh", "-c", "npm run migrate && npm run seed && npm run start"]

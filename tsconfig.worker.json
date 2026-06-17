@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "dist",
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "noEmit": false
+  },
+  "include": [
+    "src/worker.ts",
+    "src/queue/**/*.ts",
+    "src/lib/redis.ts",
+    "src/providers/**/*.ts"
+  ]
+}
