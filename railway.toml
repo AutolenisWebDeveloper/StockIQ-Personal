@@ -1,0 +1,50 @@
+# StockIQ Personal — Railway deploy configuration
+# Two services: web (Next.js) + worker (BullMQ)
+# Both point at the same repo; Railway differentiates them via the [service] rootDir + startCommand
+# Neon = DATABASE_URL (direct/unpooled)
+# Upstash = REDIS_URL (rediss:// TCP+TLS)
+#
+# NOTE: Railway reads [build]/[deploy] from this file per service, but multiple
+# services are created + configured in the Railway dashboard (see
+# docs/RAILWAY_SETUP.md §2–§3). The per-service blocks below document intent;
+# set each service's start command in its dashboard Settings if Railway does not
+# pick them up from here.
+
+[build]
+builder = "nixpacks"
+buildCommand = "npm ci && npm run build"
+
+# ── Web service ────────────────────────────────────────────────────────────────
+[[services]]
+name = "web"
+rootDir = "."
+startCommand = "npm run start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 10
+
+[services.deploy]
+numReplicas = 1
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+[[services.variables]]
+# Set these in Railway Dashboard → web service → Variables
+# (copied from .env.example — do NOT commit real values)
+name = "NODE_ENV"
+value = "production"
+
+# ── Worker service ─────────────────────────────────────────────────────────────
+[[services]]
+name = "worker"
+rootDir = "."
+startCommand = "node dist/worker/index.js"
+# No healthcheck path — worker is not HTTP; Railway keeps it alive via restartPolicy
+
+[services.deploy]
+numReplicas = 1
+restartPolicyType = "always"          # worker must never stay down
+restartPolicyMaxRetries = 10
+
+[[services.variables]]
+name = "NODE_ENV"
+value = "production"
