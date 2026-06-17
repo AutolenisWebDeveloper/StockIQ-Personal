@@ -41,7 +41,7 @@ services:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }
       web: { condition: service_started }
-    command: ["node", "dist/worker.js"]
+    command: ["node", "dist/worker/index.js"]
 
   caddy:
     image: caddy:2

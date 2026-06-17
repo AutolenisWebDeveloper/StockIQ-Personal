@@ -1,12 +1,13 @@
-// jobs.ts — canonical job names (Phase 1 fills handlers)
+// Canonical Phase 1 job names (one BullMQ queue each). Phase 0's placeholder
+// set is replaced by the real ingestion topology from the cadence matrix.
 export enum Job {
-  DailyPrices = "daily_prices",
+  PricesEod = "prices-eod", // EOD OHLCV + technicals + corporate-actions
   Fundamentals = "fundamentals",
-  Filings = "filings",
-  AnalystSnapshot = "analyst_snapshot",
+  FilingsPoll = "filings-poll",
+  ConsensusSnapshot = "consensus-snapshot",
+  EstimateSnapshot = "estimate-snapshot",
   Macro = "macro",
-  News = "news",
-  Options = "options",
-  ConvictionRecompute = "conviction_recompute",
-  ColdFetch = "cold_fetch",
+  NewsHeadlines = "news-headlines",
+  EarningsCalendar = "earnings-calendar",
+  ColdFetch = "cold-fetch", // on-demand untracked ticker
 }

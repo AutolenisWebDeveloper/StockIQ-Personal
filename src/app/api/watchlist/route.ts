@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { sql } from "@/lib/db";
+import { getQueue } from "@/queue/queues";
+import { Job } from "@/queue/jobs";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,5 +25,7 @@ export async function POST(req: Request) {
   await sql`INSERT INTO stocks (ticker) VALUES (${t}) ON CONFLICT (ticker) DO NOTHING`;
   await sql`INSERT INTO watchlist_items (watchlist_id, ticker) VALUES (${wl.id}, ${t})
     ON CONFLICT DO NOTHING`;
+  // Kick a cold fetch so a freshly-added ticker populates without waiting for EOD.
+  await getQueue(Job.ColdFetch).add(Job.ColdFetch, { ticker: t });
   return NextResponse.json({ ok: true, ticker: t });
 }

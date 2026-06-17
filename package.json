@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build && tsc -p tsconfig.worker.json && node -e \"require('fs').writeFileSync('dist/package.json', JSON.stringify({type:'commonjs'}))\"",
     "start": "next start -p 3000",
-    "worker": "tsx src/worker.ts",
+    "worker": "tsx src/worker/index.ts",
     "migrate": "tsx db/migrate.ts",
     "seed": "tsx db/seed.ts",
     "lint": "next lint"
