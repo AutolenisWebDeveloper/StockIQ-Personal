@@ -12,9 +12,9 @@
     "noEmit": false
   },
   "include": [
-    "src/worker.ts",
+    "src/worker/**/*.ts",
     "src/queue/**/*.ts",
-    "src/lib/redis.ts",
+    "src/lib/**/*.ts",
     "src/providers/**/*.ts"
   ]
 }

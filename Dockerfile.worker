@@ -11,5 +11,5 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Compose overrides this with: node dist/worker.js.
-CMD ["node", "dist/worker.js"]
+# Compose overrides this with: node dist/worker/index.js.
+CMD ["node", "dist/worker/index.js"]
