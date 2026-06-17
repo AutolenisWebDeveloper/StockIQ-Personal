@@ -1,33 +1,37 @@
 import type { Config } from "tailwindcss";
 
-// Tokens derived from StockIQ-Frontend-Design-Direction.md §7.
-// Color is reserved for two semantic axes only: market direction (up/down)
-// and the system/you (accent). Everything else is ink on paper.
+// Phase 4 dashboard palette — matched to the approved dashboard mockup:
+// warm off-white canvas, white cards, gold brand mark, and semantic
+// green/red/amber for buy/sell/risk. Numbers render tabular.
 const config: Config = {
   content: ["./src/app/**/*.{ts,tsx}", "./src/components/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        paper: "#F5F6F7",
-        surface: "#FFFFFF",
-        ink: "#16191D",
-        slate: "#5B636C",
-        rule: "#E2E5E8",
-        up: "#0E7C66",
-        down: "#B23A2E",
-        accent: "#1B43C8",
+        paper: "#F7F6F2", // app canvas (warm off-white)
+        surface: "#FFFFFF", // cards, sidebar
+        ink: "#1C1B19", // primary text
+        muted: "#8A8678", // labels, captions
+        line: "#ECEAE3", // borders, dividers
+        brand: "#B8924A", // gold mark ("PERSONAL", sparkle, IQ accent)
+        // semantic — market direction + risk
+        buy: "#1E9E6A",
+        "buy-soft": "#E7F4EE",
+        sell: "#C0392B",
+        "sell-soft": "#FBEAE8",
+        warn: "#C2882E",
+        "warn-soft": "#FAF1E1",
+        info: "#2D6CDF",
+        "info-soft": "#E9F0FC",
       },
       fontFamily: {
-        display: ['"Space Grotesk"', "sans-serif"],
-        sans: ['"IBM Plex Sans"', "sans-serif"],
+        display: ['"Space Grotesk"', "system-ui", "sans-serif"],
+        sans: ['"IBM Plex Sans"', "system-ui", "sans-serif"],
         mono: ['"IBM Plex Mono"', "ui-monospace", "monospace"],
       },
-      fontSize: {
-        prov: ["11px", { lineHeight: "14px" }],
-        eyebrow: ["11px", { letterSpacing: "0.08em" }],
-        data: ["13px", "18px"],
-        verdict: ["44px", "46px"],
-        metric: ["28px", "30px"],
+      borderRadius: { card: "12px" },
+      boxShadow: {
+        card: "0 1px 2px rgba(28,27,25,0.04), 0 1px 1px rgba(28,27,25,0.03)",
       },
     },
   },

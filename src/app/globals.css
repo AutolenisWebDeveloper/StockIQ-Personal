@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -16,23 +16,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* provenance underline system — confidence as material (design-direction §7) */
-.prov-high {
-  border-bottom: 1px solid theme(colors.ink);
-}
-.prov-med {
-  border-bottom: 1px dashed theme(colors.slate);
-}
-.prov-low {
-  border-bottom: 1px dotted theme(colors.slate);
-}
-.prov-na {
-  color: theme(colors.slate);
-  background: repeating-linear-gradient(45deg, #0000 0 5px, #e2e5e8 5px 6px);
-}
-
-/* every numeric value renders in mono with tabular figures */
+/* every quantitative value: tabular figures so columns align */
 .num {
-  font-family: theme(fontFamily.mono);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }

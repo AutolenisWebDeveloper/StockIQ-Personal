@@ -6,14 +6,10 @@ export const metadata: Metadata = {
   description: "Private single-operator equity-research decision terminal.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-paper text-ink antialiased">{children}</body>
+      <body className="bg-paper text-ink antialiased">{children}</body>
     </html>
   );
 }

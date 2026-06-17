@@ -10,25 +10,27 @@
     "worker": "tsx src/worker/index.ts",
     "migrate": "tsx db/migrate.ts",
     "seed": "tsx db/seed.ts",
+    "seed:demo": "tsx db/seed-demo.ts",
     "lint": "next lint"
   },
   "dependencies": {
+    "bullmq": "^5",
+    "ioredis": "5.10.1",
+    "lucide-react": "^1.20.0",
     "next": "^15",
+    "postgres": "^3",
     "react": "^19",
     "react-dom": "^19",
-    "postgres": "^3",
-    "ioredis": "5.10.1",
-    "bullmq": "^5",
     "zod": "^3"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "tsx": "^4",
-    "tailwindcss": "^3",
-    "postcss": "^8",
-    "autoprefixer": "^10",
     "@types/node": "^22",
     "@types/react": "^19",
-    "@types/react-dom": "^19"
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10",
+    "postcss": "^8",
+    "tailwindcss": "^3",
+    "tsx": "^4",
+    "typescript": "^5"
   }
 }
