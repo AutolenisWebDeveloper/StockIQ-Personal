@@ -13,4 +13,5 @@ export enum Job {
   Compute = "compute", // Phase 2: deterministic engines (levels/valuation/conviction/opportunity)
   EmbedFilings = "embed-filings", // Phase 3: chunk + embed filings into filing_chunks (RAG)
   GenerateReport = "generate-report", // Phase 3: flagship Decision Report (on-demand)
+  AlertsEval = "alerts-eval", // Phase 5: evaluate alerts + deliver notifications
 }
