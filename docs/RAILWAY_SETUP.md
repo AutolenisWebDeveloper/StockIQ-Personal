@@ -70,6 +70,24 @@ and the migration tolerates its absence by keeping `stock_prices` / `technical_i
 (non-hypertable) tables. On the locked `timescale/timescaledb-ha:pg16` Docker stack the same migration
 auto-upgrades them to hypertables. The preflight hard-fails only on a missing `vector`.
 
+### Populating the dashboard (first run)
+Migrations only create the schema — the dashboard stays empty ("Database unavailable — run
+`npm run migrate && npm run seed` …") until there is data. To populate it, run as a **Railway one-off**
+on the web service (it has `DATABASE_URL` + `REDIS_URL`):
+
+```
+npm run bootstrap
+```
+
+This chains: `migrate` (idempotent) → `seed` (creates the user + a "Core" watchlist + a starter ticker) →
+`enqueue:initial` (kicks off the full ingestion + compute sweep over the watchlist). The **worker must be
+running** to process the enqueued jobs, and **provider API keys must be set** (`ANTHROPIC_API_KEY`,
+`OPENAI_API_KEY`, and the market-data/news/macro provider keys) or ingestion returns nothing and the
+dashboard stays empty. Add more tickers from the Watchlists page; subsequent runs are idempotent.
+
+> Want an instant, keys-free preview instead of real data? `npm run seed:demo` fills the dashboard with
+> the mockup's sample tickers/scores. Do **not** run it against a DB that already holds real ingested data.
+
 ### Auth (deferred)
 Caddy's basic-auth gate does not exist on Railway. App-level JWT auth is Phase 4 and is
 intentionally NOT included yet — keep the web service private (no public domain / Railway
