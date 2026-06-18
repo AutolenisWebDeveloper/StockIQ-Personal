@@ -11,13 +11,13 @@
 # pick them up from here.
 
 [build]
-builder = "nixpacks"
-# Clear Next.js' incremental webpack cache before building. Nixpacks persists
-# .next/cache across builds via a mount; a stale module graph from before newer
-# files (e.g. the Phase 5 alerts modules) existed causes phantom "Module not
-# found" webpack errors even though the files are present. Wiping it forces a
-# clean module resolution each build. (`|| true` so a fresh env with no cache
-# dir doesn't fail the command.)
+# Railpack (Railway's current builder) replaces the legacy nixpacks builder,
+# whose persistent .next/cache mount poisoned webpack module resolution and
+# produced phantom "Module not found" errors for newly added files (the Phase 5
+# alerts modules, then the error-boundary pages). Railpack does not use that
+# mount, eliminating the root cause. We still wipe .next/cache as belt-and-
+# suspenders (`|| true` so a fresh env without the dir doesn't fail).
+builder = "railpack"
 buildCommand = "rm -rf .next/cache || true; npm run build"
 
 # ── Web service ────────────────────────────────────────────────────────────────
