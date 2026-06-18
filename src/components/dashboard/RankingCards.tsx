@@ -38,7 +38,7 @@ function RankingCard({ row, rank, side }: { row: TickerRow; rank: number; side: 
       </div>
       <p className="mt-1 text-[11px] leading-relaxed text-muted">Narrative lands in Phase 3 (LLM composes around these engine values).</p>
 
-      <Link href="/decision-center" className={`mt-3 text-[12px] font-semibold ${side === "buy" ? "text-buy" : "text-sell"}`}>
+      <Link href={`/reports/${row.ticker}`} className={`mt-3 text-[12px] font-semibold ${side === "buy" ? "text-buy" : "text-sell"}`}>
         View Report →
       </Link>
     </div>
