@@ -5,8 +5,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 interface Entry {
-  id: number; ticker: string; action: string; decision_date: string | null;
+  id: number; ticker: string; action: string; decision_date: string | Date | null;
   price_at_decision: string | null; conviction_level: number | null; rationale: string | null; lessons_learned: string | null;
+}
+
+// postgres.js returns DATE/TIMESTAMP columns as JS Date objects, not strings, so
+// calling .slice() on them throws a client-side exception. Normalize both forms.
+function fmtDate(d: string | Date | null): string {
+  if (!d) return "—";
+  const s = typeof d === "string" ? d : d.toISOString();
+  return s.slice(0, 10);
 }
 const field = "h-9 rounded-lg border border-line bg-surface px-3 text-[13px] focus:border-info focus:outline-none";
 const ACTIONS = ["buy", "add", "trim", "sell", "review"];
@@ -67,7 +75,7 @@ export function JournalManager({ entries }: { entries: Entry[] }) {
             <tbody>
               {entries.map((e) => (
                 <tr key={e.id} className="border-b border-line/70 align-top last:border-0">
-                  <td className="num py-2 text-[12px] text-muted">{e.decision_date?.slice(0, 10) ?? "—"}</td>
+                  <td className="num py-2 text-[12px] text-muted">{fmtDate(e.decision_date)}</td>
                   <td className="py-2"><Link href={`/reports/${e.ticker}`} className="text-[13px] font-bold text-ink hover:text-info">{e.ticker}</Link></td>
                   <td className={`py-2 text-[12px] font-semibold ${tone[e.action] ?? "text-ink"}`}>{e.action}</td>
                   <td className="num py-2 text-right text-[12px] text-ink">{e.price_at_decision != null ? `$${Number(e.price_at_decision).toFixed(2)}` : "—"}</td>
