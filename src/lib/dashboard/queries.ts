@@ -201,3 +201,19 @@ async function marketPulse(): Promise<PulseRow[]> {
   out.push({ label: "10Y Yield", value: n(tenY?.value), changePct: null });
   return out;
 }
+
+export const EMPTY_DASHBOARD: DashboardData = {
+  rows: [], topBuys: [], topSells: [], filings: [], insiders: [], institutions: [],
+  earnings: [], pulse: [],
+  brief: { highestConviction: null, highestRisk: null, topEarnings: null, newFiling: null },
+  hasData: false,
+};
+
+// Convenience wrapper so pages don't each repeat the try/catch + EMPTY fallback.
+export async function getDashboardSafe(): Promise<DashboardData> {
+  try {
+    return await getDashboardData();
+  } catch {
+    return EMPTY_DASHBOARD;
+  }
+}

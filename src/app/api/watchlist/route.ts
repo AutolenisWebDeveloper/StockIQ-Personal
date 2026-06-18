@@ -29,3 +29,15 @@ export async function POST(req: Request) {
   await getQueue(Job.ColdFetch).add(Job.ColdFetch, { ticker: t });
   return NextResponse.json({ ok: true, ticker: t });
 }
+
+export async function DELETE(req: Request) {
+  const { ticker } = await req.json();
+  if (!ticker || typeof ticker !== "string") {
+    return NextResponse.json({ error: "ticker required" }, { status: 400 });
+  }
+  const t = ticker.toUpperCase().trim();
+  const [wl] = await sql`SELECT id FROM watchlists ORDER BY id LIMIT 1`;
+  if (!wl) return NextResponse.json({ error: "no watchlist" }, { status: 409 });
+  await sql`DELETE FROM watchlist_items WHERE watchlist_id = ${wl.id} AND ticker = ${t}`;
+  return NextResponse.json({ ok: true, ticker: t });
+}
