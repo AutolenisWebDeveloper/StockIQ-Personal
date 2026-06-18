@@ -13,6 +13,7 @@ import { runColdFetch } from "./jobs/coldFetch";
 import { runCompute } from "./jobs/compute";
 import { runEmbedFilings } from "./jobs/embedFilings";
 import { runGenerateReport } from "./jobs/generateReport";
+import { runAlertsEval } from "./jobs/alertsEval";
 import { registerSchedules } from "./schedule";
 
 // data shape jobs may carry: { tickers?: string[] } or { ticker: string }
@@ -34,6 +35,7 @@ const handlers: Record<Job, (data: JobData) => Promise<void>> = {
   [Job.Compute]: (d) => runCompute(d.tickers),
   [Job.EmbedFilings]: (d) => runEmbedFilings(d.tickers),
   [Job.GenerateReport]: (d) => runGenerateReport(d.tickers),
+  [Job.AlertsEval]: () => runAlertsEval(),
 };
 
 const workers = Object.values(Job).map(

@@ -1,17 +1,27 @@
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
+import { sql } from "@/lib/db";
 
-export function AppShell({
+async function unreadCount(): Promise<number> {
+  try {
+    const [r] = await sql<{ count: number }[]>`SELECT count(*)::int AS count FROM notifications WHERE read_at IS NULL`;
+    return r?.count ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+export async function AppShell({
   title,
   subtitle,
-  alerts,
   children,
 }: {
   title: string;
   subtitle?: string;
-  alerts?: number;
+  alerts?: number; // accepted for back-compat; the badge now reflects real unread count
   children: React.ReactNode;
 }) {
+  const alerts = await unreadCount();
   return (
     <div className="flex min-h-screen bg-paper">
       <Sidebar />

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, FlaskConical, Compass, TrendingUp, TrendingDown, Telescope,
-  Star, Target, BookOpen, Bell, Calendar, FileText, Settings, HelpCircle,
+  Star, Target, BookOpen, Bell, Calendar, FileText, Settings, HelpCircle, Briefcase,
 } from "lucide-react";
 
 const NAV = [
@@ -15,6 +15,7 @@ const NAV = [
   { href: "/sell-rankings", label: "Sell Rankings", icon: TrendingDown },
   { href: "/opportunity-finder", label: "Opportunity Finder", icon: Telescope },
   { href: "/watchlists", label: "Watchlists", icon: Star },
+  { href: "/portfolio", label: "Portfolio", icon: Briefcase },
   { href: "/thesis-tracker", label: "Thesis Tracker", icon: Target },
   { href: "/journal", label: "Journal", icon: BookOpen },
   { href: "/alerts", label: "Alerts", icon: Bell },
