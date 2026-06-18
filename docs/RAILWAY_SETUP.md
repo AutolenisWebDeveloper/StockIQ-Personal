@@ -55,10 +55,20 @@ and falls back to `prepare: false` if it ever detects a `-pooler` host. Direct i
 pooled breaks DDL (migrations) on long-lived servers.
 
 ### Migrations
-Run once against the Neon DB before/at first boot:
-`DATABASE_URL=<neon-direct> npm run migrate` (locally or via a one-off Railway run).
-The migrate runner preflights `timescaledb` + `vector` — **Neon must have both extensions enabled**
-for `001_init.sql` (TimescaleDB hypertables + pgvector). Confirm in the Neon console.
+The **web service auto-runs migrations on boot** (start command `npm run migrate && npm run start`),
+so a fresh deploy creates the schema before serving. Migrations are idempotent (each file is
+recorded in `_migrations` and skipped thereafter) and the service runs a single replica, so there's
+no race. Mirror this start command in the Railway dashboard (web service → Settings → Start Command)
+if it isn't picked up from `railway.toml`.
+
+To run it manually instead (one-off Railway run or local):
+`DATABASE_URL=<neon-direct> npm run migrate`.
+
+**Extensions:** `pgvector` is **required** (filing embeddings use `vector(1536)`) — enable it in the
+Neon console with `CREATE EXTENSION vector;`. `timescaledb` is **optional**: Neon does not offer it,
+and the migration tolerates its absence by keeping `stock_prices` / `technical_indicators` as plain
+(non-hypertable) tables. On the locked `timescale/timescaledb-ha:pg16` Docker stack the same migration
+auto-upgrades them to hypertables. The preflight hard-fails only on a missing `vector`.
 
 ### Auth (deferred)
 Caddy's basic-auth gate does not exist on Railway. App-level JWT auth is Phase 4 and is

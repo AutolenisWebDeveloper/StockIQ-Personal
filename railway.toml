@@ -18,7 +18,10 @@ buildCommand = "npm run build"
 [[services]]
 name = "web"
 rootDir = "."
-startCommand = "npm run start"
+# Auto-apply DB migrations before serving. Idempotent (each file recorded in
+# _migrations and skipped thereafter) and the web service runs a single replica,
+# so a fresh deploy provisions the Neon schema with no manual one-off step.
+startCommand = "npm run migrate && npm run start"
 healthcheckPath = "/api/health"
 healthcheckTimeout = 10
 
