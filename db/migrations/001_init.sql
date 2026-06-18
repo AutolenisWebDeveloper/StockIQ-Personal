@@ -1,5 +1,13 @@
--- Extensions (the -ha image ships both)
-CREATE EXTENSION IF NOT EXISTS timescaledb;
+-- Extensions.
+-- TimescaleDB is OPTIONAL: the locked Docker stack (timescaledb-ha) ships it and
+-- we upgrade the time-series tables to hypertables below. Managed Postgres such as
+-- Neon does not offer it, so we tolerate its absence and keep plain tables, which
+-- are fully functional for a single-user workload. pgvector is required (Neon has it).
+DO $$ BEGIN
+  CREATE EXTENSION IF NOT EXISTS timescaledb;
+EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'timescaledb unavailable - time-series tables stay plain (non-hypertable)';
+END $$;
 CREATE EXTENSION IF NOT EXISTS vector;
 
 -- ============ Identity / control ============
@@ -47,7 +55,11 @@ CREATE TABLE IF NOT EXISTS stock_prices (
   open NUMERIC, high NUMERIC, low NUMERIC, close NUMERIC, adj_close NUMERIC, volume BIGINT,
   PRIMARY KEY (ticker, ts)
 );
-SELECT create_hypertable('stock_prices', 'ts', if_not_exists => TRUE);
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'timescaledb') THEN
+    PERFORM create_hypertable('stock_prices', 'ts', if_not_exists => TRUE);
+  END IF;
+END $$;
 
 CREATE TABLE IF NOT EXISTS technical_indicators (
   ticker TEXT NOT NULL, ts TIMESTAMPTZ NOT NULL,
@@ -55,7 +67,11 @@ CREATE TABLE IF NOT EXISTS technical_indicators (
   bb_upper NUMERIC, bb_lower NUMERIC, ma20 NUMERIC, ma50 NUMERIC, ma200 NUMERIC, rel_strength NUMERIC,
   PRIMARY KEY (ticker, ts)
 );
-SELECT create_hypertable('technical_indicators', 'ts', if_not_exists => TRUE);
+DO $$ BEGIN
+  IF EXISTS (SELECT 1 FROM pg_extension WHERE extname = 'timescaledb') THEN
+    PERFORM create_hypertable('technical_indicators', 'ts', if_not_exists => TRUE);
+  END IF;
+END $$;
 
 -- ============ Filings + AI (declared early; soft-referenced by *_filing_id) ============
 CREATE TABLE IF NOT EXISTS sec_filings (
