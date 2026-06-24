@@ -38,6 +38,25 @@ docker compose up --build
 The app is served behind Caddy (basic-auth) at `https://localhost`.
 Health check: `GET /api/health` → `200 {status:"ok"}`.
 
+### Local setup helper
+
+A tiny helper script is included to create a local `.env` from `.env.example` and optionally inject the Caddy and seed password hashes non-interactively.
+
+Usage (from the project root):
+
+```bash
+# non-interactive: provide the hashes + user-agent via env vars
+AUTH_HASH='$2b$12$4OYczcFymTTenmyBd0n/zu8LYiwxDeE5w2a1EN6.TTJVuJDzrUawK' \
+  SEED_HASH='$2b$12$4OYczcFymTTenmyBd0n/zu8LYiwxDeE5w2a1EN6.TTJVuJDzrUawK' \
+  SEC_USER_AGENT='StockIQ Personal you@example.com' \
+  sh scripts/init-local.sh
+
+# interactive: the script will create .env but won't overwrite existing values
+sh scripts/init-local.sh
+```
+
+The script only writes to `.env` and never commits secrets. After creating `.env` run the Docker commands in the Quick start to build, migrate and seed the database.
+
 ### Acceptance feature
 
 ```bash
